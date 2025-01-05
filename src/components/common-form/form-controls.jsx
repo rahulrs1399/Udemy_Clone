@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@radix-ui/react-select";
 import { Label } from "../ui/label";
-import { Input } from "postcss";
+import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 function FormControl({ formControl = [], formData, setFormData }) {
@@ -15,11 +15,12 @@ function FormControl({ formControl = [], formData, setFormData }) {
     switch (getControlItem.componentType) {
       case "input":
         element = (
-          <input
+          <Input
             id={getControlItem.name}
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
+
           />
         );
         break;
@@ -43,31 +44,37 @@ function FormControl({ formControl = [], formData, setFormData }) {
         );
         break;
 
-        case "textarea":
-            element = <Textarea 
+      case "textarea":
+        element = (
+          <Textarea
             id={getControlItem.name}
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
-            />
-            break;
+          />
+        );
+        break;
 
       default:
-        element = <Input 
-        id={getControlItem.name}
+        element = (
+          <Input
+            id={getControlItem.name}
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
-        />;
+          />
+        );
         break;
     }
+    return element;
   }
 
   return (
     <div className="flex flex-col gap-3">
       {formControl.map((controleItem) => (
         <div key={controleItem.name}>
-          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
+          <Label className=" items-start" htmlFor={controleItem.name}>{controleItem.label}</Label>
+          {renderComponentByType(controleItem)}
         </div>
       ))}
     </div>
