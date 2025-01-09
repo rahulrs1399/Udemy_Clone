@@ -8,22 +8,49 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import CommonForm from "@/components/common-form";
-import { signInFormControls, signUpFormControls } from "@/config";
+import { initialSignInFormData, signInFormControls } from "@/config";
+// import CommonForm from "@/components/common-form";
+import { signUpFormControls, initialSignUpFormData } from "@/config";
+import { AuthContext } from "@/context";
 
 function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
-  const {signInFormData,
-    setSignInformData,
+  const {
+    signInFormData,
+    setSignInFormData,
     signUpFormData,
-    setSignUpFormData} = useContext()
+    setSignUpFormData,
+  } = useContext(AuthContext);
 
   function handleTabChange(value) {
     setActiveTab(value);
   }
 
+  function checkIfSignInFormIsValid() {
+    return (
+      signInFormData &&
+      signInFormData.userEmail !== "" &&
+      signInFormData.password !== ""
+    );
+  }
+
+  function checkIfSignUpFormIsValid() {
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.userEmail !== "" &&
+      signUpFormData.password !== ""
+    );
+  }
+
   return (
+    // <div>
+    //   <h1>Auth Page</h1>
+    //   <p>This is the authentication page.</p>
+    // </div>
+
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
         <Link to={"/"} className="flex items-center justify-center">
@@ -50,10 +77,13 @@ function AuthPage() {
                   Enter your email and password to access your account
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-2"> 
                 <CommonForm
-                  formControl={signInFormControls}
+                  formControls={signInFormControls}
+                  formData={signInFormData}
                   buttonText={"Sign In"}
+                  setFormData={setSignInFormData}
+                  isButtonDisabled={!checkIfSignInFormIsValid()}
                 />
               </CardContent>
             </Card>
@@ -68,8 +98,11 @@ function AuthPage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
-                  formControl={signUpFormControls}
+                  formControls={signUpFormControls}
+                  formData={signUpFormData}
                   buttonText={"Sign Up"}
+                  setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpFormIsValid()}
                 />
               </CardContent>
             </Card>

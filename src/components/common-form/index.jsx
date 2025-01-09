@@ -1,13 +1,27 @@
 import { Button } from "../ui/button";
-import FormControl from "./form-controls";
+import FormControls from "./form-controls";
 
-function CommonForm({ handleSubmit, buttonText, formControl = [], formData, setFormData, }) {
+function CommonForm({
+  formControls = [],
+  buttonText,
+  formData,
+  setFormData,
+  handleSubmit = (e) => e.preventDefault(),
+  isButtonDisabled = false,
+}) {
   return (
     <form onSubmit={handleSubmit}>
-      {/* render form control here */}
-      <FormControl formControl={formControl} formData={formData} setFormData={setFormData} />
 
-      <Button type="submit" className="mt-5 w-full">{buttonText || "submit"}</Button>
+      {/* render form control here */}
+      <FormControls
+        formControls={formControls}
+        formData={formData}
+        setFormData={setFormData}
+      />
+
+      <Button disable={isButtonDisabled} type="submit" className="mt-5 w-full">
+        {buttonText || "submit"}
+      </Button>
     </form>
   );
 }
